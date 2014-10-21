@@ -1,6 +1,6 @@
 # ApiAuthenticator
 
-This gem will authenticate requests
+This gem will authenticate API requests using a modified version HMAC-SHA1
 
 ## Installation
 
@@ -74,6 +74,13 @@ class ApiController
     ApiAuthentiactor.authenticated_request?(request)
   end
 end
+```
+
+## Running The Specs
+
+Just run rake:
+```
+rake
 ```
 
 ## Contributing
