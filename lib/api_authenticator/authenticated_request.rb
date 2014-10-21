@@ -15,13 +15,13 @@ module ApiAuthenticator
     return false if time.nil?
     utc_now = Time.now.utc
 
-    lower_threshold = utc_now - @@time_threshold
-    upper_threshold = utc_now + @@time_threshold
+    lower_threshold = utc_now - time_threshold
+    upper_threshold = utc_now + time_threshold
 
     time >= lower_threshold && time <= upper_threshold
   end
 
   def self.valid_api_token?(time, token)
-    Digest::SHA1.hexdigest("#{time}#{@@shared_secret_key}") == token
+    Digest::SHA1.hexdigest("#{time}#{shared_secret_key}") == token
   end
 end
