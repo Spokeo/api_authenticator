@@ -8,8 +8,8 @@ Gem::Specification.new do |spec|
   spec.version       = ApiAuthenticator::VERSION
   spec.authors       = ["Austin Fonacier"]
   spec.email         = ["austinrf@gmail.com"]
-  spec.summary       = "This gem will authenticate API requests using a modified version HMAC-SHA1"
-  spec.description   = "This gem will authenticate API requests using a modified version HMAC-SHA1"
+  spec.summary       = "This gem will authenticate API requests using a modified HMAC-SHA1"
+  spec.description   = "This gem will authenticate API requests using a modified HMAC-SHA1"
   spec.homepage      = "https://github.com/Spokeo/api_authenticator"
   spec.license       = "MIT"
 

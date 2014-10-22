@@ -6,7 +6,7 @@ describe 'ApiAuthenticator' do
     'asdf'
   end
   let :valid_request do
-    time = Time.now.utc
+    time = DateTime.now.utc
     double(:request, headers: {"API-Time" => time.to_s, "API-Token" => Digest::SHA1.hexdigest("#{time}#{shared_key}")})
   end
 
@@ -23,7 +23,7 @@ describe 'ApiAuthenticator' do
   context "authenticated_request?" do
     before :each do
       ApiAuthenticator.configure do |config|
-        config.time_threshold = 3.hours
+        config.time_threshold = 2.hours
         config.shared_secret_key = shared_key
       end
     end
