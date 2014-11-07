@@ -1,4 +1,6 @@
 module ApiAuthenticator
+  @@logger = nil
+
   def self.configure
     yield self
   end
@@ -28,6 +30,6 @@ module ApiAuthenticator
   end
 
   def self.logger
-    @@logger
+    @@logger || Logger.new($stdout)
   end
 end

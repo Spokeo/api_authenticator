@@ -65,16 +65,27 @@ class ApiController
 end
 ```
 
-Or you can use it without the before_filter
+Or you can use it without the before_filter.
+Note here is that right now, if the request is not authenticated the gem with throw an exception.  All exceptions inherit from ApiAuthentiactor::BaseError
 
 ```ruby
 class ApiController
   def people
     # Takes a Rails request object
-    ApiAuthentiactor.authenticated_request?(request)
+    begin
+      ApiAuthentiactor.authenticated_request?(request)
+    rescue ApiAuthenticator::InvalidTimeError => e
+      logger.error(e)
+    rescue ApiAuthenticator::InvalidTokenError => e
+      logger.error(e)
+    end
   end
 end
 ```
+
+
+## TODO:
+- Set time intervals instead of explicity passing in the time.
 
 ## Running The Specs
 

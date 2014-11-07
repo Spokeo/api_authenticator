@@ -28,19 +28,21 @@ describe 'ApiAuthenticator' do
       end
     end
 
-    it "should return true given a valid request" do
-      expect(ApiAuthenticator.authenticated_request?(valid_request)).to be_truthy
+    context 'valid_request' do
+      it "should not throw an exception" do
+        expect{ApiAuthenticator.authenticated_request?(valid_request)}.to_not raise_error
+      end
     end
 
     context 'invalid time' do
-      it "should return false" do
-        expect(ApiAuthenticator.authenticated_request?(bad_time_request)).to_not be_truthy
+      it "should raise InvalidTimeError" do
+        expect{ApiAuthenticator.authenticated_request?(bad_time_request)}.to raise_error(ApiAuthenticator::InvalidTimeError)
       end
     end
 
     context 'bad api token' do
-      it "should return false" do
-        expect(ApiAuthenticator.authenticated_request?(bad_token_request)).to_not be_truthy
+      it "should raise InvalidTokenError" do
+        expect{ApiAuthenticator.authenticated_request?(bad_token_request)}.to raise_error(ApiAuthenticator::InvalidTokenError)
       end
     end
   end

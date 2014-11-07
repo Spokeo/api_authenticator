@@ -1,3 +1,3 @@
 module ApiAuthenticator
-  VERSION = "0.0.2.dev"
+  VERSION = "0.0.3.dev"
 end
