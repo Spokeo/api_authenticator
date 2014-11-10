@@ -9,7 +9,7 @@ module ApiAuthenticator
     token = request.headers['API-Token']
     begin
       time = DateTime.parse(request.headers['API-Time'])
-    rescue ArgumentError
+    rescue ArgumentError, TypeError
     end
     valid_api_time?(time)
     valid_api_token?(time, token)
