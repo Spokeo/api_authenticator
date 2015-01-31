@@ -1,23 +1,30 @@
 require 'spec_helper'
+require 'openssl'
 require 'active_support/core_ext'
 
 describe 'ApiAuthenticator' do
   let :shared_key do
     'asdf'
   end
+
+  let :api_token do
+    digest = OpenSSL::Digest.new('sha256')
+    OpenSSL::HMAC.hexdigest(digest, shared_key, "#{DateTime.now.new_offset(0)}http://www.austinrocks.com/asdf")
+  end
+
   let :valid_request do
     time = DateTime.now.utc
-    double(:request, headers: {"API-Time" => time.to_s, "API-Token" => Digest::SHA1.hexdigest("#{time}#{shared_key}")})
+    double(:request, original_url: "http://www.austinrocks.com/asdf", headers: {"API-Time" => time.to_s, "API-Token" => api_token})
   end
 
   let :bad_time_request do
     time = 6.years.from_now
-    double(:request, headers: {"API-Time" => time.to_s, "API-Token" => Digest::SHA1.hexdigest("#{time}#{shared_key}")})
+    double(:request, original_url: "http://www.austinrocks.com/asdf", headers: {"API-Time" => time.to_s, "API-Token" => api_token})
   end
 
   let :bad_token_request do
     time = Time.now.utc
-    double(:request, headers: {"API-Time" => time.to_s, "API-Token" => "AUSTIN LIVES IN YO TESTS"})
+    double(:request, original_url: "http://www.austinrocks.com/asdf", headers: {"API-Time" => time.to_s, "API-Token" => "AUSTIN LIVES IN YO TESTS"})
   end
 
   context "authenticated_request?" do

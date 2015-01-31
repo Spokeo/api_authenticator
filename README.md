@@ -1,6 +1,6 @@
 # ApiAuthenticator
 
-This gem will authenticate API requests using a modified version HMAC-SHA1
+This gem will authenticate API requests using a slightly modified version HMAC-SHA1
 
 ## Installation
 
@@ -33,8 +33,12 @@ For example:
 ```
 
 ### API-Token
-The token passed in is a SHA1 of the time AND the shared token between server and client
+The token passed in is a SHA256 of the time AND the request URL.  The shared_secret_key is used as the encyrption key.
+
 ```ruby
+digest = OpenSSL::Digest.new('sha256')
+
+env['API-Token'] = OpenSSL::HMAC.hexdigest(digest, shared_secret_key, "#{DateTime.now.new_offset(0)}#{request.original_url}")
 ```
 
 

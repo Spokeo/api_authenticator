@@ -1,4 +1,6 @@
 require 'active_support/core_ext'
+require 'openssl'
+
 
 module ApiAuthenticator
   # authenticated_request?
@@ -12,7 +14,7 @@ module ApiAuthenticator
     rescue ArgumentError, TypeError
     end
     valid_api_time?(time)
-    valid_api_token?(time, token)
+    valid_api_token?(request.original_url, time, token)
   end
 
   protected
@@ -29,8 +31,9 @@ module ApiAuthenticator
     end
   end
 
-  def self.valid_api_token?(time, token)
-    expected_token = Digest::SHA1.hexdigest("#{time}#{shared_secret_key}")
+  def self.valid_api_token?(request_url, time, token)
+    digest = OpenSSL::Digest.new('sha256')
+    expected_token = OpenSSL::HMAC.hexdigest(digest, shared_secret_key, "#{time}#{request_url}")
     unless expected_token == token
       raise InvalidTokenError.new(time, shared_secret_key, expected_token, token)
     end

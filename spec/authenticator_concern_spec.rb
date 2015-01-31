@@ -25,23 +25,24 @@ describe "ApiAuthenticator Concern" do
 
   let :bad_time_request do
     time = 6.years.from_now
-    double(:request, headers: {"API-Time" => time.to_s, "API-Token" => Digest::SHA1.hexdigest("#{time}#{shared_key}")})
+    double(:request, original_url: "http://www.austinrocks.com/asdf", headers: {"API-Time" => time.to_s, "API-Token" => Digest::SHA1.hexdigest("#{time}#{shared_key}")})
   end
 
   let :bad_token_request do
     time = Time.now.utc
-    double(:request, headers: {"API-Time" => time.to_s, "API-Token" => "AUSTIN LIVES IN YO TESTS"})
+    double(:request, original_url: "http://www.austinrocks.com/asdf", headers: {"API-Time" => time.to_s, "API-Token" => "AUSTIN LIVES IN YO TESTS"})
   end
 
   let :valid_request do
     time = DateTime.now.utc
-    double(:request, headers: {"API-Time" => time.to_s, "API-Token" => Digest::SHA1.hexdigest("#{time}#{shared_key}")})
+    double(:request, original_url: "http://www.austinrocks.com/asdf", headers: {"API-Time" => time.to_s, "API-Token" => Digest::SHA1.hexdigest("#{time}#{shared_key}")})
   end
 
   describe "api_authenticator" do
     context 'successful requests' do
       it "should not return false if authenticated_request" do
         temp_class = TesterTemper.new(valid_request)
+        expect(temp_class).to receive(:render) { }
         expect(temp_class.api_authenticator).to be_nil
       end
     end
