@@ -42,7 +42,6 @@ describe "ApiAuthenticator Concern" do
     context 'successful requests' do
       it "should not return false if authenticated_request" do
         temp_class = TesterTemper.new(valid_request)
-        expect(temp_class).to receive(:render) { }
         expect(temp_class.api_authenticator).to be_nil
       end
     end

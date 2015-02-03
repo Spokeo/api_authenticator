@@ -12,6 +12,11 @@ describe 'ApiAuthenticator' do
     OpenSSL::HMAC.hexdigest(digest, shared_key, "#{DateTime.now.new_offset(0)}http://www.austinrocks.com/asdf")
   end
 
+  let :valid_request_backwards_compatible do
+    time = DateTime.now.utc
+    double(:request, original_url: "http://www.austinrocks.com/asdf", headers: {"API-Time" => time.to_s, "API-Token" => Digest::SHA1.hexdigest("#{time}#{shared_key}")})
+  end
+
   let :valid_request do
     time = DateTime.now.utc
     double(:request, original_url: "http://www.austinrocks.com/asdf", headers: {"API-Time" => time.to_s, "API-Token" => api_token})
@@ -34,6 +39,13 @@ describe 'ApiAuthenticator' do
         config.shared_secret_key = shared_key
       end
     end
+
+    context 'backwards compatibability' do
+      it "should not throw an exception" do
+        expect{ApiAuthenticator.authenticated_request?(valid_request_backwards_compatible)}.to_not raise_error
+      end
+    end
+
 
     context 'valid_request' do
       it "should not throw an exception" do

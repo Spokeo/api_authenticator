@@ -34,7 +34,10 @@ module ApiAuthenticator
   def self.valid_api_token?(request_url, time, token)
     digest = OpenSSL::Digest.new('sha256')
     expected_token = OpenSSL::HMAC.hexdigest(digest, shared_secret_key, "#{time}#{request_url}")
-    unless expected_token == token
+
+    expected_token2 = Digest::SHA1.hexdigest("#{time}#{shared_secret_key}")
+
+    unless [expected_token, expected_token2].include?(token)
       raise InvalidTokenError.new(time, shared_secret_key, expected_token, token)
     end
   end
