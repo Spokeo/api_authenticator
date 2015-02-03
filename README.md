@@ -1,6 +1,10 @@
 # ApiAuthenticator
 
-This gem will authenticate API requests using a slightly modified version HMAC-SHA1
+## Special 0.0.99 Version
+
+This version of the gem is backwards compatible with the old modified HMAC-SHA1 version and the more secure HMAC-SHA256 version.  This is supposed to be a step version meant for in-between deploying the client and server.  Once all your clients are upgraded, you can upgrade to 0.1.0.
+
+This gem will authenticate API requests using a slightly modified version HMAC-SHA256.
 
 ## Installation
 
