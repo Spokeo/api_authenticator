@@ -1,5 +1,8 @@
 # ApiAuthenticator
 
+[![Code Climate](https://codeclimate.com/github/Spokeo/api_authenticator/badges/gpa.svg)](https://codeclimate.com/github/Spokeo/api_authenticator)
+[![Build Status](https://travis-ci.org/Spokeo/api_authenticator.svg)](https://travis-ci.org/Spokeo/api_authenticator)
+
 This gem will authenticate API requests using a slightly modified version HMAC-SHA1
 
 ## Installation
