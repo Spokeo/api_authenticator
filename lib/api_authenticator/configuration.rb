@@ -5,12 +5,12 @@ module ApiAuthenticator
     yield self
   end
 
-  def self.shared_secret_key=(shared_secret_key)
-    @@shared_secret_key = shared_secret_key
+  def self.shared_secret_keys=(shared_secret_keys)
+    @@shared_secret_keys = shared_secret_keys
   end
 
-  def self.shared_secret_key
-    @@shared_secret_key
+  def self.shared_secret_keys
+    @@shared_secret_keys
   end
 
   def self.time_threshold=(time_threshold)

@@ -4,7 +4,7 @@ require 'active_support/core_ext'
 describe 'ApiAuthenticator::Errors' do
   describe "InvalidTokenError" do
     it "should have a constructed_message" do
-      error = ApiAuthenticator::InvalidTokenError.new(DateTime.now.utc, 'asdf', 'foobar', 'yolo')
+      error = ApiAuthenticator::InvalidTokenError.new(DateTime.now.utc, [[DateTime.now.utc, 'foobar', 'yolo']])
       expect(error.constructed_message).to match(/Invalid\sToken\sError/)
     end
   end

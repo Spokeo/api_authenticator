@@ -1,5 +1,4 @@
 require 'spec_helper'
-require 'active_support'
 
 class TesterTemper
   include ApiAuthenticator
@@ -15,7 +14,7 @@ describe "ApiAuthenticator Concern" do
   before :each do
     ApiAuthenticator.configure do |config|
       config.time_threshold = 2.hours
-      config.shared_secret_key = shared_key
+      config.shared_secret_keys = [shared_key]
     end
   end
 
@@ -47,7 +46,7 @@ describe "ApiAuthenticator Concern" do
       it "should not return false if authenticated_request" do
         temp_class = TesterTemper.new(valid_request)
         # expect(temp_class).to receive(:render) { }
-        expect(temp_class.api_authenticator).to be_nil
+        expect(temp_class.api_authenticator).to be_truthy
       end
     end
 

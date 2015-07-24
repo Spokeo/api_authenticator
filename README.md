@@ -49,14 +49,14 @@ env['API-Token'] = OpenSSL::HMAC.hexdigest(digest, shared_secret_key, "#{DateTim
 
 ```ruby
 ApiAuthenticator.configure do |config|
-  config.shared_secret_key = "my_shared_token"
+  config.shared_secret_keys = ["my_shared_token", "my_shared_token2"]
   config.time_threshold = 2.hours
   config.logger = Rails.logger
   config.report_unauthenticated_requests = true
 end
 ```
 
- - shared_secret_key: The shared secret key between the client and the server.
+ - shared_secret_keys: An Array of approved shared secret keys between the client and the server.
  - time_threshold: The time threshold to allow requests.  So for example the entry above will only allow requests from 2 hours before now and 2 hours in the future.
  - logger: Your logger
  - report_unauthenticated_requests: will throw some basic information into your logger.warn.
@@ -99,6 +99,19 @@ end
 Just run rake:
 ```
 rake
+```
+
+## Upggrading from 0.1.0 to 0.2.0
+
+The big change here is ApiAuthenticator now takes a list of shared secret keys.  So where there was
+```ruby
+ApiAuthenticator.shared_secret_key = 'key1'
+```
+
+it now takes an array
+
+```ruby
+ApiAuthenticator.shared_secret_keys = ['key1', 'key2']
 ```
 
 ## Contributing

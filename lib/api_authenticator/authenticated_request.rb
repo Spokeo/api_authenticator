@@ -1,6 +1,4 @@
-require 'active_support/core_ext'
 require 'openssl'
-
 
 module ApiAuthenticator
   # authenticated_request?
@@ -33,9 +31,13 @@ module ApiAuthenticator
 
   def self.valid_api_token?(request_url, time, token)
     digest = OpenSSL::Digest.new('sha256')
-    expected_token = OpenSSL::HMAC.hexdigest(digest, shared_secret_key, "#{time}#{request_url}")
-    unless expected_token == token
-      raise InvalidTokenError.new(time, shared_secret_key, expected_token, token)
+    keys_and_tokens = []
+    shared_secret_keys.each do |secret_key|
+      expected_token = OpenSSL::HMAC.hexdigest(digest, secret_key, "#{time}#{request_url}")
+      return true if expected_token == token
+      keys_and_tokens << [secret_key, token, expected_token]
     end
+
+    raise InvalidTokenError.new(time, keys_and_tokens)
   end
 end

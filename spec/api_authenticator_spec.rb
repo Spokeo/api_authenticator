@@ -1,10 +1,13 @@
 require 'spec_helper'
 require 'openssl'
-require 'active_support/core_ext'
 
 describe 'ApiAuthenticator' do
   let :shared_key do
     'asdf'
+  end
+
+  let :shared_key2 do
+    'fork123'
   end
 
   let :api_token do
@@ -13,6 +16,16 @@ describe 'ApiAuthenticator' do
   end
 
   let :valid_request do
+    time = DateTime.now.utc
+    double(:request, original_url: "http://www.austinrocks.com/asdf", headers: {"API-Time" => time.to_s, "API-Token" => api_token})
+  end
+
+  let :api_token2 do
+    digest = OpenSSL::Digest.new('sha256')
+    OpenSSL::HMAC.hexdigest(digest, shared_key2, "#{DateTime.now.new_offset(0)}http://www.austinrocks.com/asdf")
+  end
+
+  let :valid_request_shared_key2 do
     time = DateTime.now.utc
     double(:request, original_url: "http://www.austinrocks.com/asdf", headers: {"API-Time" => time.to_s, "API-Token" => api_token})
   end
@@ -31,13 +44,17 @@ describe 'ApiAuthenticator' do
     before :each do
       ApiAuthenticator.configure do |config|
         config.time_threshold = 2.hours
-        config.shared_secret_key = shared_key
+        config.shared_secret_keys = [shared_key, shared_key2]
       end
     end
 
     context 'valid_request' do
       it "should not throw an exception" do
         expect{ApiAuthenticator.authenticated_request?(valid_request)}.to_not raise_error
+      end
+
+      it "should not throw an exception with shared_key2" do
+        expect{ApiAuthenticator.authenticated_request?(valid_request_shared_key2)}.to_not raise_error
       end
     end
 

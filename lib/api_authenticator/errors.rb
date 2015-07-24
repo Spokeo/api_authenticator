@@ -17,18 +17,20 @@ module ApiAuthenticator
   end
 
   class InvalidTokenError < BaseError
-    attr_reader :time, :shared_secret_key, :expected_token, :actual_token
+    attr_reader :time, :keys_and_tokens
 
-    def initialize(time, shared_secret_key, expected_token, actual_token)
+    def initialize(time, keys_and_tokens)
       @time = time
-      @shared_secret_key = shared_secret_key
-      @expected_token = expected_token
-      @actual_token = actual_token
+      @keys_and_tokens = keys_and_tokens
     end
 
 
     def constructed_message
-      "Invalid Token Error Time: #{@time} Shared Key: #{@shared_secret_key} expected token: #{@expected_token} actual token: #{@actual_token}"
+      message = ""
+      @keys_and_tokens.each do |key_and_token|
+        message << "Invalid Token Error Time: #{@time} Shared Key: #{key_and_token[0]} expected token: #{key_and_token[2]} actual token: #{key_and_token[1]}"
+      end
+      message
     end
   end
 end
