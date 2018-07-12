@@ -1,4 +1,5 @@
 require 'openssl'
+require 'active_support/security_utils' if defined?(ActiveSupport)
 
 module ApiAuthenticator
   # authenticated_request?
@@ -34,7 +35,11 @@ module ApiAuthenticator
     keys_and_tokens = []
     shared_secret_keys.each do |secret_key|
       expected_token = OpenSSL::HMAC.hexdigest(digest, secret_key, "#{time}#{request_url}")
-      return true if expected_token == token
+      if defined?(ActiveSupport)
+         return true if ActiveSupport::SecurityUtils.secure_compare(expected_token, token)
+      else
+        return true if expected_token == token
+      end
       keys_and_tokens << [secret_key, token, expected_token]
     end
 
