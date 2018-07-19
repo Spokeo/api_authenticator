@@ -51,6 +51,7 @@ env['API-Token'] = OpenSSL::HMAC.hexdigest(digest, shared_secret_key, "#{DateTim
 ApiAuthenticator.configure do |config|
   config.shared_secret_keys = ["my_shared_token", "my_shared_token2"]
   config.time_threshold = 2.hours
+  config.request_type = :path # :url by default if nothing is set
   config.logger = Rails.logger
   config.report_unauthenticated_requests = true
 end
@@ -58,6 +59,7 @@ end
 
  - shared_secret_keys: An Array of approved shared secret keys between the client and the server.
  - time_threshold: The time threshold to allow requests.  So for example the entry above will only allow requests from 2 hours before now and 2 hours in the future.
+ - request_type: 2 options: :url or :path.  By default it's :url which uses the full URL has as the hashing mechanism.  :path only uses the path for the hashing mechanism.
  - logger: Your logger
  - report_unauthenticated_requests: will throw some basic information into your logger.warn.
 
