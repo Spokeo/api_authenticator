@@ -13,10 +13,18 @@ module ApiAuthenticator
     rescue ArgumentError, TypeError
     end
     valid_api_time?(time)
-    valid_api_token?(request.original_url, time, token)
+    valid_api_token?(originating_request(request), time, token)
   end
 
   protected
+
+  def self.originating_request(request)
+    if request_type == PATH_REQUEST_TYPE
+      request.original_fullpath
+    else
+      request.original_url
+    end
+  end
 
   def self.valid_api_time?(time)
     return false if time.nil?
