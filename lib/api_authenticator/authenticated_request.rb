@@ -20,7 +20,7 @@ module ApiAuthenticator
 
   def self.originating_request(request)
     if request_type == PATH_REQUEST_TYPE
-      request.original_path
+      request.original_fullpath
     else
       request.original_url
     end

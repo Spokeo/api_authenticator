@@ -22,12 +22,12 @@ describe 'ApiAuthenticator' do
 
   let :valid_request do
     time = DateTime.now.utc
-    double(:request, original_path: "/asdf", original_url: "http://www.austinrocks.com/asdf", headers: {"API-Time" => time.to_s, "API-Token" => api_token})
+    double(:request, original_fullpath: "/asdf", original_url: "http://www.austinrocks.com/asdf", headers: {"API-Time" => time.to_s, "API-Token" => api_token})
   end
 
   let :valid_request_with_path do
     time = DateTime.now.utc
-    double(:request, original_path: "/asdf", original_url: "http://www.austinrocks.com/asdf", headers: {"API-Time" => time.to_s, "API-Token" => api_token_from_request})
+    double(:request, original_fullpath: "/asdf", original_url: "http://www.austinrocks.com/asdf", headers: {"API-Time" => time.to_s, "API-Token" => api_token_from_request})
   end
 
   let :api_token2 do
@@ -37,17 +37,17 @@ describe 'ApiAuthenticator' do
 
   let :valid_request_shared_key2 do
     time = DateTime.now.utc
-    double(:request, original_path: "/asdf", original_url: "http://www.austinrocks.com/asdf", headers: {"API-Time" => time.to_s, "API-Token" => api_token})
+    double(:request, original_fullpath: "/asdf", original_url: "http://www.austinrocks.com/asdf", headers: {"API-Time" => time.to_s, "API-Token" => api_token})
   end
 
   let :bad_time_request do
     time = 6.years.from_now
-    double(:request, original_path: "/asdf", original_url: "http://www.austinrocks.com/asdf", headers: {"API-Time" => time.to_s, "API-Token" => api_token})
+    double(:request, original_fullpath: "/asdf", original_url: "http://www.austinrocks.com/asdf", headers: {"API-Time" => time.to_s, "API-Token" => api_token})
   end
 
   let :bad_token_request do
     time = Time.now.utc
-    double(:request, original_path: "/asdf", original_url: "http://www.austinrocks.com/asdf", headers: {"API-Time" => time.to_s, "API-Token" => "AUSTIN LIVES IN YO TESTS"})
+    double(:request, original_fullpath: "/asdf", original_url: "http://www.austinrocks.com/asdf", headers: {"API-Time" => time.to_s, "API-Token" => "AUSTIN LIVES IN YO TESTS"})
   end
 
 
